@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 800" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <style>
+      .title { font-size: 26px; font-weight: 700; fill: #0f172a; }
+      .layer { font-size: 13px; font-weight: 700; fill: #2563eb; letter-spacing: .5px; }
+      .box-title { font-size: 15px; font-weight: 700; fill: #0f172a; }
+      .box-sub { font-size: 12px; fill: #475569; }
+      .pill { font-size: 12px; fill: #1e293b; }
+      .edge { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .edge-dash { stroke: #94a3b8; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1060" height="800" fill="#ffffff"/>
+  <text x="40" y="46" class="title">🧭 TravelAgent — System Architecture</text>
+
+  <!-- ============ UI LAYER ============ -->
+  <text x="40" y="84" class="layer">PRESENTATION</text>
+  <rect x="40" y="94" width="980" height="92" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="60" y="120" class="box-title">Streamlit UI · app.py</text>
+  <rect x="60" y="132" width="270" height="40" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="74" y="150" class="pill">Input mode A: structured form</text>
+  <text x="74" y="166" class="pill">Input mode B: free-text description</text>
+  <rect x="350" y="132" width="300" height="40" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="364" y="150" class="pill">Streaming model output</text>
+  <text x="364" y="166" class="pill">Tabs: Itinerary · Map · Budget · Debug</text>
+  <rect x="670" y="132" width="330" height="40" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="684" y="150" class="pill">ReAct trace (Thought / Action /</text>
+  <text x="684" y="166" class="pill">Observation) · download itinerary.json</text>
+
+  <!-- ============ ORCHESTRATION LAYER ============ -->
+  <text x="40" y="222" class="layer">ORCHESTRATION — TravelReActAgent · agent.py</text>
+  <rect x="40" y="232" width="980" height="190" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+
+  <rect x="60" y="252" width="200" height="64" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="72" y="276" class="box-title">1 · Parse preferences</text>
+  <text x="72" y="296" class="box-sub">free-text → TravelPreferences</text>
+  <text x="72" y="310" class="box-sub">(LLM, JSON extract)</text>
+
+  <rect x="280" y="252" width="200" height="64" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="292" y="276" class="box-title">2 · Build RAG query</text>
+  <text x="292" y="296" class="box-sub">denoise + keep semantics</text>
+  <text x="292" y="310" class="box-sub">+ raw user text</text>
+
+  <rect x="500" y="252" width="220" height="64" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="512" y="276" class="box-title">3 · ReAct loop</text>
+  <text x="512" y="296" class="box-sub">LLM-driven tool routing,</text>
+  <text x="512" y="310" class="box-sub">Thought→Action→Observation</text>
+
+  <rect x="740" y="252" width="260" height="64" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="752" y="276" class="box-title">4 · Single structured gen</text>
+  <text x="752" y="296" class="box-sub">one streamed call → strict JSON</text>
+  <text x="752" y="310" class="box-sub">(summary + days + budget…)</text>
+
+  <rect x="280" y="340" width="220" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="292" y="364" class="box-title">5 · JSON → TripPlan</text>
+  <text x="292" y="384" class="box-sub">parse + coerce, coords grounded</text>
+
+  <rect x="520" y="340" width="280" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="532" y="364" class="box-title">6 · Attach Amap route map</text>
+  <text x="532" y="384" class="box-sub">maps_schema_personal_map → URI</text>
+
+  <!-- inner step arrows -->
+  <path class="edge" d="M260,284 L278,284" marker-end="url(#arrow)"/>
+  <path class="edge" d="M480,284 L498,284" marker-end="url(#arrow)"/>
+  <path class="edge" d="M720,284 L738,284" marker-end="url(#arrow)"/>
+  <path class="edge" d="M820,316 C820,330 500,326 400,338" marker-end="url(#arrow)"/>
+  <path class="edge" d="M500,370 L518,370" marker-end="url(#arrow)"/>
+
+  <!-- ============ CAPABILITY LAYER ============ -->
+  <text x="40" y="458" class="layer">CAPABILITIES</text>
+  <rect x="40" y="468" width="300" height="96" rx="12" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <text x="60" y="494" class="box-title">LLM · llm.py</text>
+  <text x="60" y="516" class="box-sub">DashScope (OpenAI-compatible)</text>
+  <text x="60" y="534" class="box-sub">deepseek chat · streaming</text>
+  <text x="60" y="552" class="box-sub">graceful mock fallback</text>
+
+  <rect x="380" y="468" width="300" height="96" rx="12" fill="#fef9c3" stroke="#fde68a"/>
+  <text x="400" y="494" class="box-title">RAG · rag.py</text>
+  <text x="400" y="516" class="box-sub">Chroma persistent · HNSW (cosine)</text>
+  <text x="400" y="534" class="box-sub">text-embedding-v4 vectors</text>
+  <text x="400" y="552" class="box-sub">hash-embedding fallback</text>
+
+  <rect x="720" y="468" width="300" height="96" rx="12" fill="#faf5ff" stroke="#e9d5ff"/>
+  <text x="740" y="494" class="box-title">Tools · MCP (Streamable HTTP)</text>
+  <text x="740" y="516" class="box-sub">Amap / Gaode · 15 geo tools</text>
+  <text x="740" y="534" class="box-sub">Bailian WebSearch</text>
+  <text x="740" y="552" class="box-sub">mock / real modes</text>
+
+  <!-- ============ DATA LAYER ============ -->
+  <text x="40" y="618" class="layer">OFFLINE INGESTION</text>
+  <rect x="40" y="628" width="980" height="84" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <rect x="60" y="648" width="230" height="46" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="74" y="668" class="box-sub">Wikivoyage</text>
+  <text x="74" y="685" class="box-sub">MediaWiki API (CC BY-SA)</text>
+  <rect x="330" y="648" width="250" height="46" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="344" y="668" class="box-sub">build_rag.py / build_rag_bulk.py</text>
+  <text x="344" y="685" class="box-sub">chunk · embed · upsert (idempotent)</text>
+  <rect x="620" y="648" width="200" height="46" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="634" y="675" class="box-sub">Chroma index (data/chroma)</text>
+  <path class="edge" d="M290,671 L328,671" marker-end="url(#arrow)"/>
+  <path class="edge" d="M580,671 L618,671" marker-end="url(#arrow)"/>
+
+  <!-- ============ CROSS-LAYER EDGES ============ -->
+  <path class="edge" d="M530,186 L530,230" marker-end="url(#arrow)"/>
+  <text x="540" y="214" class="box-sub">prefs / stream</text>
+
+  <path class="edge-dash" d="M160,316 L180,468" marker-end="url(#arrow)"/>
+  <path class="edge-dash" d="M380,400 C320,440 430,455 470,466" marker-end="url(#arrow)"/>
+  <path class="edge-dash" d="M610,316 C640,400 720,440 800,466" marker-end="url(#arrow)"/>
+  <path class="edge-dash" d="M660,400 C760,430 840,448 880,466" marker-end="url(#arrow)"/>
+
+  <path class="edge-dash" d="M720,694 C520,740 430,610 530,566" marker-end="url(#arrow)"/>
+  <text x="430" y="730" class="box-sub">index feeds RAG retrieval</text>
+</svg>
