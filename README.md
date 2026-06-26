@@ -38,6 +38,7 @@ The model produces a structured plan in a single pass, showing each day's time, 
 duration, estimated cost, and reasoning:
 
 ![Daily itinerary](imgs/2.png)
+![Daily may](imgs/image.png)
 
 The Debug tab exposes the full ReAct trace — every step's Thought, tool call, and Observation,
 including the route-map link returned by Amap's `maps_schema_personal_map`:
